@@ -16,6 +16,7 @@ export default function Main() {
             })
         }
         return newDice
+
     }
 
     function rollDice() {
@@ -23,10 +24,16 @@ export default function Main() {
     }
 
     const diceElements = dice.map(die => (
-        <Die key={die.id} value={die.value} isHeld={die.isHeld} />
+        <Die key={die.id} value={die.value} isHeld={die.isHeld} holdDice={() => holdDice(die.id)} />
     ))
 
-    console.log(dice)
+    function holdDice(id) {
+        setDice(oldDice => oldDice.map(die => {
+            return die.id === id ?
+                { ...die, isHeld: !die.isHeld } :
+                die
+        }))
+    }
 
     return (
         <section>

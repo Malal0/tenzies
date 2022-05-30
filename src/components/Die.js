@@ -4,7 +4,7 @@ export default function Die(props) {
     }
 
     return (
-        <div className="die" style={styles}>{props.value}</div>
+        <div className="die" style={styles} onClick={props.holdDice}>{props.value}</div>
         /*<div className="die active">1</div>*/
     )
 }
