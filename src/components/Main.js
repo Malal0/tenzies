@@ -1,5 +1,7 @@
 import React from "react"
 import Die from "./Die"
+import Count from "./Count"
+import Timer from "./Timer"
 import { nanoid } from "nanoid"
 import Confetti from "react-confetti"
 
@@ -8,6 +10,8 @@ export default function Main() {
     const [dice, setDice] = React.useState(allNewDice)
 
     const [tenzies, setTenzies] = React.useState(false)
+
+    const [count, setCount] = React.useState(0)
 
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
@@ -43,8 +47,10 @@ export default function Main() {
                     die :
                     generateNewDie()
             }))
+            countIncrease()
         } else {
             setTenzies(false)
+            countReset()
             setDice(allNewDice())
         }
     }
@@ -61,10 +67,20 @@ export default function Main() {
         }))
     }
 
+    function countIncrease() {
+        setCount(prevCount => prevCount + 1)
+    }
+
+    function countReset() {
+        setCount(prevCount => prevCount = 0)
+    }
+
     return (
         <section>
             <div className="main">
                 {tenzies && <Confetti />}
+                <Timer />
+                <Count count={count} />
                 <h1 className="title">tenzies</h1>
                 <p className="instructions">Roll until all dice are the same. Click each die to freeze it at it's current value between rolls.</p>
                 <div className="dieContainer">
