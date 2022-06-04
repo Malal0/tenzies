@@ -104,7 +104,7 @@ export default function Main() {
     }
 
     const run = () => {
-        if (ms === 100) {
+        if (ms > 99) {
             sec++
             ms = 0
         }
@@ -125,6 +125,9 @@ export default function Main() {
         if (someHeld && count === 0) {
             setGameStarted(true)
             console.log("the game has begun")
+        } else if (!someHeld && count > 0) {
+            setGameStarted(true)
+            console.log("the game has begun")
         }
     }
 
@@ -136,15 +139,15 @@ export default function Main() {
             stop()
         }
     }, [gameStarted])
-    //  main part of the Main.js
+    //  main part of the Main.js    //
     return (
         <section>
             <div className="main">
-                {tenzies && <Confetti />}
+                {tenzies && <Confetti width={window.innerWidth} height={window.innerHeight} className="confetti" />}
                 <Timer
                     min={gameTime.minutes >= 10 ? gameTime.minutes : "0" + gameTime.minutes}
                     sec={gameTime.seconds >= 10 ? gameTime.seconds : "0" + gameTime.seconds}
-                    millisec={gameTime.milliseconds >= 10 ? gameTime.milliseconds : "0" + gameTime.milliseconds}
+                    millisec={gameTime.milliseconds >= 10 ? gameTime.milliseconds + "0" : "0" + gameTime.milliseconds + "0"}
                 />
                 <Count count={count} />
                 <h1 className="title">tenzies</h1>
