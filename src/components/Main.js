@@ -3,7 +3,6 @@ import Die from "./Die"
 import Count from "./Count"
 import Timer from "./Timer"
 import { nanoid } from "nanoid"
-import Confetti from "react-confetti"
 
 export default function Main() {
 
@@ -142,8 +141,7 @@ export default function Main() {
     //  main part of the Main.js    //
     return (
         <section>
-            <div className="main">
-                {tenzies && <Confetti width={window.innerWidth} height={window.innerHeight} className="confetti" />}
+            <div className={tenzies ? "main winning" : "main"}>
                 <Timer
                     min={gameTime.minutes >= 10 ? gameTime.minutes : "0" + gameTime.minutes}
                     sec={gameTime.seconds >= 10 ? gameTime.seconds : "0" + gameTime.seconds}
