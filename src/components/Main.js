@@ -13,6 +13,12 @@ export default function Main() {
 
     const [count, setCount] = React.useState(0)
 
+    const [gameTime, setGameTime] = React.useState({
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0
+    })
+
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -75,11 +81,38 @@ export default function Main() {
         setCount(prevCount => prevCount = 0)
     }
 
+    let ms = 0
+    let sec = 0
+    let min = 0
+    setInterval(() => {
+        ms += 250
+        if (ms >= 1000) {
+            ms = 0
+            sec++
+        }
+
+        if (sec >= 60) {
+            sec = 0
+            min++
+        }
+
+        console.log(`Timer: ${min.toFixed(2)}m :${sec.toFixed(2)}s :${ms.toFixed()}ms`)
+
+    }, 250)
+
+    // function timer() {
+    //     let ms = 0
+
+
+    //     console.log(ms)
+    // }
+    // timer()
+
     return (
         <section>
             <div className="main">
                 {tenzies && <Confetti />}
-                <Timer />
+                <Timer min={min} sec={sec} millisec={ms} />
                 <Count count={count} />
                 <h1 className="title">tenzies</h1>
                 <p className="instructions">Roll until all dice are the same. Click each die to freeze it at it's current value between rolls.</p>

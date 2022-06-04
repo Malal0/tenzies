@@ -1,5 +1,5 @@
-export default function Timer() {
+export default function Timer(props) {
     return (
-        <div className="timer">1m:00s:00ms</div>
+        <div className="timer">{props.min}m:{props.sec}s:{props.millisec}ms</div>
     )
 }
