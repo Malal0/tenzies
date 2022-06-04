@@ -19,6 +19,10 @@ export default function Main() {
         minutes: 0
     })
 
+    const [gameStarted, setGameStarted] = React.useState(false)
+
+    const [interv, setInterv] = React.useState()
+
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -26,10 +30,9 @@ export default function Main() {
         if (allHeld && allSameValue) {
             setTenzies(true)
             console.log("You won")
-
-            stopTimer()
-            console.log("stopped")
+            setGameStarted(false)
         }
+        gameHasStarted()
     }, [dice])
 
     function generateNewDie() {
@@ -60,6 +63,7 @@ export default function Main() {
         } else {
             setTenzies(false)
             countReset()
+            timerReset()
             setDice(allNewDice())
         }
     }
@@ -84,58 +88,55 @@ export default function Main() {
         setCount(prevCount => prevCount = 0)
     }
 
-    let ms = 0
-    let sec = 0
-    let min = 0
+    let ms = gameTime.milliseconds
+    let sec = gameTime.seconds
+    let min = gameTime.minutes
 
-    function recordTime() {
-        setInterval(() => {
-            ms += 250
-            setGameTime(prevTime => ({
-                ...prevTime,
-                milliseconds: ms
-            }))
+    const start = () => {
+        console.log("start timer")
+        run()
+        setInterv(setInterval(run, 10))
+    }
 
-            if (ms >= 1000) {
-                ms = 0
-                sec++
-                setGameTime(prevTime => ({
-                    ...prevTime,
-                    seconds: sec,
-                }))
-            }
-            if (sec >= 60) {
-                sec = 0
-                min++
-                setGameTime(prevTime => ({
-                    ...prevTime,
-                    minutes: min,
-                }))
-            }
-        }, 250)
+    const stop = () => {
+        clearInterval(interv)
+        console.log("stop function ran")
+    }
+
+    const run = () => {
+        if (ms === 100) {
+            sec++
+            ms = 0
+        }
+        if (sec === 60) {
+            min++
+            sec = 0
+        }
+        ms++
+        return setGameTime({ milliseconds: ms, seconds: sec, minutes: min })
+    }
+
+    function timerReset() {
+        setGameTime({ milliseconds: 0, seconds: 0, minutes: 0 })
+    }
+
+    function gameHasStarted() {
+        const someHeld = dice.some(die => die.isHeld)
+        if (someHeld && count === 0) {
+            setGameStarted(true)
+            console.log("the game has begun")
+        }
     }
 
     React.useEffect(() => {
-        const someHeld = dice.some(die => die.isHeld)
-        const allHeld = dice.every(die => die.isHeld)
-
-        if (tenzies === false && count === 0 && !someHeld) {
-            ms = 0
-            setGameTime(prevTime => ({
-                minutes: 0,
-                seconds: 0,
-                milliseconds: 0
-            }))
-            console.log("reseted")
-        } else if (someHeld || count > 0) {
-            recordTime()
+        if (gameStarted) {
+            start()
+            console.log(gameStarted)
+        } else {
+            stop()
         }
-    }, [dice])
-
-    function stopTimer() {
-        clearInterval(recordTime())
-    }
-
+    }, [gameStarted])
+    //  main part of the Main.js
     return (
         <section>
             <div className="main">
