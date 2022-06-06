@@ -22,6 +22,8 @@ export default function Main() {
 
     const [interv, setInterv] = React.useState()
 
+    const [localHighScore, setLocalHighScore] = React.useState(0)
+
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -92,7 +94,6 @@ export default function Main() {
     let min = gameTime.minutes
 
     const start = () => {
-        console.log("start timer")
         run()
         setInterv(setInterval(run, 10))
     }
@@ -130,12 +131,33 @@ export default function Main() {
         }
     }
 
+    let totalMS = 0
+    localStorage.setItem("highscore", JSON.stringify(totalMS))
+
+    function getTotalMs() {
+        totalMS = (gameTime.milliseconds) + (gameTime.seconds * 100) + (gameTime.minutes * 6000)
+    }
+
+    function setHighScore() {
+        if (JSON.parse(localStorage.getItem("highscore")) === 0) {
+            localStorage.setItem("highscore", JSON.stringify(totalMS))
+            console.log("first score")
+        } else if (totalMS < JSON.parse(localStorage.getItem("highscore"))) {
+            localStorage.setItem("highscore", JSON.stringify(totalMS))
+            console.log("new score")
+        }
+    }
+
     React.useEffect(() => {
         if (gameStarted) {
             start()
             console.log(gameStarted)
         } else {
             stop()
+            getTotalMs()
+            console.log(totalMS)
+            setHighScore()
+            console.log(`${localStorage.getItem("highscore")} is the highscore`)
         }
     }, [gameStarted])
     //  main part of the Main.js    //
@@ -154,6 +176,7 @@ export default function Main() {
                     {diceElements}
                 </div>
                 <button className="rollBtn" onClick={rollDice}>{tenzies ? "new game" : "roll"}</button>
+                <p>{localHighScore}</p>
             </div>
         </section>
     )
