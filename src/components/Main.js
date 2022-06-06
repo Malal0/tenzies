@@ -34,6 +34,7 @@ export default function Main() {
             setGameStarted(false)
         }
         gameHasStarted()
+        changeLocalHighScore()
     }, [dice])
 
     function generateNewDie() {
@@ -146,6 +147,11 @@ export default function Main() {
             localStorage.setItem("highscore", JSON.stringify(totalMS))
             console.log("new score")
         }
+    }
+    //      Made function to set LocalHighScore      //
+    function changeLocalHighScore() {
+        if (localHighScore > totalMS)
+            setLocalHighScore(localStorage.getItem("highscore"))
     }
 
     React.useEffect(() => {
