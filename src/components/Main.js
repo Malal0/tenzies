@@ -150,8 +150,12 @@ export default function Main() {
     }
     //      Made function to set LocalHighScore      //
     function changeLocalHighScore() {
-        if (localHighScore > totalMS)
-            setLocalHighScore(localStorage.getItem("highscore"))
+        /*
+            get local highscore
+            get the new total ms
+            if new total ms < local highscore
+            set local high score to the new total ms
+        */
     }
 
     React.useEffect(() => {
