@@ -163,9 +163,13 @@ export default function Main() {
             setHighScore()
         }
     }, [gameStarted])
+
+    const styles = {
+        backgroundColor: tenzies ? "#59e391" : "#0b2434"
+    }
     //  main part of the Main.js    //
     return (
-        <section>
+        <section className="Container" style={styles}>
             <div className={tenzies ? "main winning" : "main"}>
                 <Timer
                     min={gameTime.minutes >= 10 ? gameTime.minutes : "0" + gameTime.minutes}
