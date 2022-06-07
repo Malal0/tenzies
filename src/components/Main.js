@@ -143,14 +143,18 @@ export default function Main() {
         }
     }
     //      Made function to get the LocalHighScore if it exist      //
-    function getTheLocalHighscore() {
+    //function getTheLocalHighscore() {
+    React.useEffect(() => {
         if (localStorage.getItem("highscore") === null) {
             setLocalHighScore(0)
+        } else {
+            setLocalHighScore(JSON.parse(localStorage.getItem("highscore")))
         }
-    }
+    }, [])
+    //}
 
     React.useEffect(() => {
-        getTheLocalHighscore()
+        //getTheLocalHighscore()
         if (gameStarted) {
             start()
         } else {
