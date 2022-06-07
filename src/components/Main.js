@@ -22,7 +22,7 @@ export default function Main() {
 
     const [interv, setInterv] = React.useState()
 
-    const [localHighScore, setLocalHighScore] = React.useState(0)
+    const [localHighScore, setLocalHighScore] = React.useState()
 
     React.useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
@@ -30,11 +30,9 @@ export default function Main() {
         const allSameValue = dice.every(die => die.value === firstValue)
         if (allHeld && allSameValue) {
             setTenzies(true)
-            console.log("You won")
             setGameStarted(false)
         }
         gameHasStarted()
-        changeLocalHighScore()
     }, [dice])
 
     function generateNewDie() {
@@ -101,7 +99,6 @@ export default function Main() {
 
     const stop = () => {
         clearInterval(interv)
-        console.log("stop function ran")
     }
 
     const run = () => {
@@ -125,15 +122,12 @@ export default function Main() {
         const someHeld = dice.some(die => die.isHeld)
         if (someHeld && count === 0) {
             setGameStarted(true)
-            console.log("the game has begun")
         } else if (!someHeld && count > 0) {
             setGameStarted(true)
-            console.log("the game has begun")
         }
     }
 
     let totalMS = 0
-    localStorage.setItem("highscore", JSON.stringify(localHighScore))
 
     function getTotalMs() {
         totalMS = (gameTime.milliseconds) + (gameTime.seconds * 100) + (gameTime.minutes * 6000)
@@ -142,33 +136,28 @@ export default function Main() {
     function setHighScore() {
         if (localHighScore === 0) {
             setLocalHighScore(totalMS)
-            console.log("no new score")
+            localStorage.setItem("highscore", totalMS)
         } else if (totalMS < localHighScore) {
             setLocalHighScore(totalMS)
-            console.log("new score")
+            localStorage.setItem("highscore", totalMS)
         }
     }
-    //      Made function to set LocalHighScore      //
-    function changeLocalHighScore() {
-        /*
-            get local highscore
-            get the new total ms
-            if new total ms < local highscore
-            set local high score to the new total ms
-        */
+    //      Made function to get the LocalHighScore if it exist      //
+    function getTheLocalHighscore() {
+        if (localStorage.getItem("highscore") === null) {
+            setLocalHighScore(0)
+        }
     }
 
     React.useEffect(() => {
+        getTheLocalHighscore()
         if (gameStarted) {
             start()
             console.log(gameStarted)
         } else {
             stop()
             getTotalMs()
-            console.log(totalMS)
             setHighScore()
-            console.log(`${localHighScore} is the highscore`)
-            changeLocalHighScore()
         }
     }, [gameStarted])
     //  main part of the Main.js    //
@@ -187,7 +176,7 @@ export default function Main() {
                     {diceElements}
                 </div>
                 <button className="rollBtn" onClick={rollDice}>{tenzies ? "new game" : "roll"}</button>
-                <p>{localHighScore}</p>
+                <p>Your best time : {localHighScore}0ms</p>
             </div>
         </section>
     )
