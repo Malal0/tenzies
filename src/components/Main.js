@@ -183,7 +183,7 @@ export default function Main() {
                     {diceElements}
                 </div>
                 <button className="rollBtn" onClick={rollDice}>{tenzies ? "new game" : "roll"}</button>
-                <p>Your best time : {localHighScore}0ms</p>
+                <p className=" instructions">Your best time : {localHighScore}0ms</p>
             </div>
         </section>
     )
