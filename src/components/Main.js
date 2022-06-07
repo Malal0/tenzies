@@ -133,18 +133,18 @@ export default function Main() {
     }
 
     let totalMS = 0
-    localStorage.setItem("highscore", JSON.stringify(totalMS))
+    localStorage.setItem("highscore", JSON.stringify(localHighScore))
 
     function getTotalMs() {
         totalMS = (gameTime.milliseconds) + (gameTime.seconds * 100) + (gameTime.minutes * 6000)
     }
 
     function setHighScore() {
-        if (JSON.parse(localStorage.getItem("highscore")) === 0) {
-            localStorage.setItem("highscore", JSON.stringify(totalMS))
-            console.log("first score")
-        } else if (totalMS < JSON.parse(localStorage.getItem("highscore"))) {
-            localStorage.setItem("highscore", JSON.stringify(totalMS))
+        if (localHighScore === 0) {
+            setLocalHighScore(totalMS)
+            console.log("no new score")
+        } else if (totalMS < localHighScore) {
+            setLocalHighScore(totalMS)
             console.log("new score")
         }
     }
@@ -167,7 +167,8 @@ export default function Main() {
             getTotalMs()
             console.log(totalMS)
             setHighScore()
-            console.log(`${localStorage.getItem("highscore")} is the highscore`)
+            console.log(`${localHighScore} is the highscore`)
+            changeLocalHighScore()
         }
     }, [gameStarted])
     //  main part of the Main.js    //
