@@ -153,7 +153,6 @@ export default function Main() {
         getTheLocalHighscore()
         if (gameStarted) {
             start()
-            console.log(gameStarted)
         } else {
             stop()
             getTotalMs()
